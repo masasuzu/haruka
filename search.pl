@@ -8,10 +8,10 @@ use Net::Twitter;
 
 my $nt = Net::Twitter->new(
     traits   => [qw/API::RESTv1_1/],
-    consumer_key        => '',
-    consumer_secret     => '',
-    access_token        => '',
-    access_token_secret => '',
+    consumer_key        => $ENV{CONSUMER_KEY},
+    consumer_secret     => $ENV{CONSUMER_SECRET},
+    access_token        => $ENV{ACCESS_TOKEN},
+    access_token_secret => $ENV{ACCESS_TOKEN_SECRET},
 );
 
 use YAML;
@@ -20,8 +20,6 @@ my $result = $nt->search(+{
     lang => 'ja',
     count => 100,
     result_type => 'mixed',
-    until => '2017-01-17',
-#    max_id => 839482459775344641,
 });
 my $data = [map {
     my $status = $_;
