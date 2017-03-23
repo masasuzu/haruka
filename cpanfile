@@ -1,2 +1,2 @@
-requires 'Net::Twitter';
+requires 'Twitter::API';
 requires 'YAML';

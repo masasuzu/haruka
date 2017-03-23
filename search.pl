@@ -4,10 +4,10 @@ use utf8;
 use 5.18.0;
 use Encode;
 
-use Net::Twitter;
+use Twitter::API;
 
-my $nt = Net::Twitter->new(
-    traits   => [qw/API::RESTv1_1/],
+my $nt = Twitter::API->new_with_traits(
+    traits              => 'Enchilada',
     consumer_key        => $ENV{CONSUMER_KEY},
     consumer_secret     => $ENV{CONSUMER_SECRET},
     access_token        => $ENV{ACCESS_TOKEN},
@@ -15,7 +15,7 @@ my $nt = Net::Twitter->new(
 );
 
 use YAML;
-my $result = $nt->search(+{
+my $result = $nt->get('search/tweets' => +{
     q    => 'from:@haruka_tachiba #橘カレンダー',
     lang => 'ja',
     count => 100,
