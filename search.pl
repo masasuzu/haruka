@@ -15,12 +15,14 @@ my $nt = Twitter::API->new_with_traits(
 );
 
 use YAML;
-my $result = $nt->get('search/tweets' => +{
-    q    => 'from:@haruka_tachiba #橘カレンダー',
-    lang => 'ja',
-    count => 100,
-    result_type => 'mixed',
+my $result = $nt->get('statuses/user_timeline' => +{
+    count => 200,
+    screen_name => 'haruka_tachiba',
+    trim_user => 1,
+    exclude_replies => 1,
+    include_rts => 0,
 });
+
 my $data = [map {
     my $status = $_;
     my $datum = +{};
@@ -34,7 +36,9 @@ my $data = [map {
 
     $datum;
 
-} (@{$result->{statuses}}) ];
+} grep {
+    $_->{text} =~ m/#橘カレンダー/
+} (@{$result}) ];
 
 say YAML::Dump($data);
 
