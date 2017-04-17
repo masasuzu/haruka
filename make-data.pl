@@ -24,7 +24,7 @@ sub get {
         trim_user => 1,
         exclude_replies => 1,
         include_rts => 0,
-        $max_id ? (max_id      => $max_id ) : (),
+        $max_id ? (max_id => $max_id ) : (),
     });
 
 
@@ -32,15 +32,18 @@ sub get {
         my $status = $_;
         my $datum = +{};
 
-        $datum->{id}         = $status->{id};
-        $datum->{created_at} = $status->{created_at};
-        $datum->{text}       = $status->{text};
-        $datum->{media_url} = [ map {
-            $_->{expanded_url};
-        } (@{$status->{extended_entities}->{media}})];
+        $datum->{id}   = $status->{id};
+        $datum->{text} = $status->{text};
+        my ($month, $day) = $datum->{text} =~ m/([0-9]{1,2})\/([0-9]{1,2})/;
+        if ($month && $day) {
+            my $year = $month < 9 ? 2017 : 2016;
 
-        $datum;
-
+            $datum->{date} = "$year/$month/$day";
+            $datum;
+        }
+        else {
+            ();
+        }
     } grep {
         $_->{text} =~ m/#橘カレンダー/
     } (@{$result}) ];
